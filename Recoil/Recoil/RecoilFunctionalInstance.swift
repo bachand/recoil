@@ -10,7 +10,7 @@ import Foundation
 
 func getFunctionalElement(_ element: Element) -> FunctionalElement {
   switch element {
-  case .function(let functionalElement):
+  case ElementEnum.function(let functionalElement):
     return functionalElement
   default:
     fatalError()

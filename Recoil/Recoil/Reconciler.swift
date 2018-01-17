@@ -12,9 +12,9 @@ import Foundation
 class Reconciler {
   static func instantiateComponent(element: Element, root: RecoilRoot?) -> RecoilInstance {
     switch element {
-    case .host(_): return RecoilHostInstance(element: element, root: root)
-    case .component(_): return RecoilCompositeInstance(element: element, root: root)
-    case .function(_): return RecoilFunctionalInstance(element: element, root: root)
+    case ElementEnum.host(_): return RecoilHostInstance(element: element, root: root)
+    case ElementEnum.component(_): return RecoilCompositeInstance(element: element, root: root)
+    case ElementEnum.function(_): return RecoilFunctionalInstance(element: element, root: root)
     default: fatalError()
     }
   }
@@ -54,11 +54,11 @@ class Reconciler {
     // TODO: deal with strings/literals???
 
     switch (prev, next) {
-    case let (.host(a), .host(b)):
+    case let (ElementEnum.host(a), ElementEnum.host(b)):
       return a.type == b.type
-    case let (.component(a), .component(b)):
+    case let (ElementEnum.component(a), ElementEnum.component(b)):
       return a.type == b.type
-    case (.function(_), .function(_)):
+    case (ElementEnum.function(_), ElementEnum.function(_)):
       return false // TODO???
     default:
       return false

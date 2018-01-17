@@ -13,24 +13,30 @@ import Foundation
 import Recoil
 import YogaKit
 
-struct AppProps {
+struct AppProps: Props {
   let foo: String
 }
 
-struct AppState {
+struct AppState: State {
   let count: Int
 }
 
-class App: Component<AppProps, AppState> {
-  override func getInitialState() -> AppState {
+final class App<P: Props, S: State>: BaseComponent {
+
+
+
+
+  func getInitialState() -> State {
     return AppState(count: 1)
   }
-  override func componentDidMount() {
+
+  func componentDidMount() {
     setState { state in
       return AppState(count: state.count + 1 )
     }
   }
-  override func render() -> Element? {
+
+  func render() -> Element? {
     var children = [
       h(Image.self, key: 0, ImageProps()
         .style(styles.child + styles.red + styles.transform)
@@ -59,6 +65,8 @@ class App: Component<AppProps, AppState> {
     children.insert(toInsert, at: state.count % 5 == 0 ? 0 : 1)
     return h(View.self, ViewProps().style(styles.container + styles.green)) { children }
   }
+
+  private
 }
 
 private struct Styles {

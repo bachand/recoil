@@ -22,7 +22,7 @@ extension Int: Key {
 
 
 
-public enum Element {
+public enum ElementEnum: Element {
   case host(HostElement)
   case component(ComponentElement)
   case function(FunctionalElement)
@@ -33,37 +33,37 @@ public enum Element {
 }
 
 public struct ComponentElement {
-  let type: ComponentProtocol.Type
-  let props: Any
+  let type: Component.Type
+  let props: Props
   let key: Key?
 }
 
 public struct FunctionalElement {
   let type: (Any) -> Element?
   let realType: Any
-  let props: Any
+  let props: Props
   let key: Key?
 }
 
 public struct HostElement {
   let type: HostComponentProtocol.Type
-  let props: Any
+  let props: Props
   internal let key: Key?
 }
 
 public func ==(lhs: Element, rhs: Element) -> Bool {
   switch (lhs, rhs) {
-  case let (.host(a), .host(b)):
+  case let (ElementEnum.host(a), ElementEnum.host(b)):
     return a == b
-  case let (.component(a), .component(b)):
+  case let (ElementEnum.component(a), ElementEnum.component(b)):
     return a == b
-  case let (.string(a), .string(b)):
+  case let (ElementEnum.string(a), ElementEnum.string(b)):
     return a == b
-  case let (.double(a), .double(b)):
+  case let (ElementEnum.double(a), ElementEnum.double(b)):
     return a == b
-  case let (.int(a), .int(b)):
+  case let (ElementEnum.int(a), ElementEnum.int(b)):
     return a == b
-  case (.array(_), .array(_)):
+  case (ElementEnum.array, ElementEnum.array):
     return false
   default:
     return false

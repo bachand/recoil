@@ -16,7 +16,7 @@ enum Operation {
 
 private func getHostElement(_ element: Element) -> HostElement {
   switch element {
-  case .host(let hostElement):
+  case ElementEnum.host(let hostElement):
     return hostElement
   default:
     fatalError()

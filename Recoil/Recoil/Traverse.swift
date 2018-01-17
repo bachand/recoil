@@ -19,16 +19,16 @@ private func getKey(el: Element?, index: Int) -> String {
   // index.
   if let el = el {
     switch el {
-    case let .host(hostElement):
+    case let ElementEnum.host(hostElement):
       if let key = hostElement.key {
         return key.recoilKeyValue()
       }
-    case let .component(componentElement):
+    case let ElementEnum.component(componentElement):
       if let key = componentElement.key {
         return key.recoilKeyValue()
       }
       break
-    case let .function(functionElement):
+    case let ElementEnum.function(functionElement):
       if let key = functionElement.key {
         return key.recoilKeyValue()
       }
@@ -53,11 +53,11 @@ private func traverseAllChildrenImpl<T>(
 
   switch children {
   case
-    .host(_),
-    .component(_),
-    .function(_),
-    .int(_),
-    .double(_):
+    ElementEnum.host(_),
+    ElementEnum.component(_),
+    ElementEnum.function(_),
+    ElementEnum.int(_),
+    ElementEnum.double(_):
     // Handle a single child.
     // We'll treat this name as if it were a lone item in an array, as going from
     // a single child to an array is fairly common.
@@ -66,11 +66,11 @@ private func traverseAllChildrenImpl<T>(
     // passed in from the reconciler and it used there to track the children.
     callback(&traverseContext, children, nameSoFar + SEPARATOR + getKey(el: children, index: 0))
     return 1
-  case .string(let string):
-    let el = Element.host(HostElement(type: TextLiteral.self, props: string, key: nil))
+  case ElementEnum.string(let string):
+    let el = ElementEnum.host(HostElement(type: TextLiteral.self, props: string, key: nil))
     callback(&traverseContext, el, nameSoFar + SEPARATOR + getKey(el: children, index: 0))
     return 1
-  case .array(let elements):
+  case ElementEnum.array(let elements):
     // Otherwise we have an array. React also supports iterators but we won't.
     // We need to return the number of children so start tracking that.
     // Note that this isn't simply children.length - since children can contain nested
@@ -91,6 +91,8 @@ private func traverseAllChildrenImpl<T>(
     }
 
     return subTreeCount
+
+  default: fatalError()
   }
 }
 

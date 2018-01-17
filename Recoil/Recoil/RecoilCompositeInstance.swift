@@ -10,14 +10,14 @@ import Foundation
 
 func getComponentElement(_ element: Element) -> ComponentElement {
   switch element {
-  case .component(let hostElement):
+  case ElementEnum.component(let hostElement):
     return hostElement
   default:
     fatalError()
   }
 }
 
-class RecoilCompositeInstance: RecoilInstance {
+public class RecoilCompositeInstance: RecoilInstance {
   var currentElement: Element {
     didSet {
       componentElement = getComponentElement(currentElement)
@@ -27,8 +27,8 @@ class RecoilCompositeInstance: RecoilInstance {
   var root: RecoilRoot?
   var mountIndex: Int = -1
   var componentElement: ComponentElement
-  var pendingState: Any?
-  var component: ComponentProtocol?
+  var pendingState: State?
+  var component: Component?
   var renderedComponent: RecoilInstance?
 
   init(element: Element, root: RecoilRoot?) {
@@ -43,7 +43,6 @@ class RecoilCompositeInstance: RecoilInstance {
     // Arrays or other types, we can safely assume we have an element.
     let component = componentElement.type.init(props: componentElement.props)
     self.component = component
-    component.instance = self
 
     component.componentWillMount()
 
@@ -89,10 +88,10 @@ class RecoilCompositeInstance: RecoilInstance {
     let nextComponentElement = getComponentElement(nextElement)
 
     if prevComponentElement != nextComponentElement {
-      component.componentWillReceiveProps(nextProps: nextComponentElement.props)
+      component.componentWillReceiveProps(nextComponentElement.props)
     }
 
-    let prevState = component.getStateInternal()
+    let prevState = component.state
     let nextState = pendingState ?? prevState
 
     // React would call shouldComponentUpdate here and short circuit.
@@ -103,12 +102,12 @@ class RecoilCompositeInstance: RecoilInstance {
     }
 
     // React would call componentWillUpdate here
-    component.componentWillUpdate(nextProps: nextComponentElement.props, nextState: nextState)
+    component.componentWillUpdate(nextComponentElement.props, nextState)
 
     currentElement = nextElement
 
-    component.setPropsInternal(props: componentElement.props)
-    component.setStateInternal(state: nextState)
+    component.setPropsInternal(componentElement.props)
+    component.setStateInternal(nextState)
     pendingState = nil
 
     // React has a wrapper instance, which complicates the logic. We'll do
@@ -125,7 +124,7 @@ class RecoilCompositeInstance: RecoilInstance {
 
       Reconciler.receiveComponent(instance: renderedComponent, element: nextRenderedElement)
 
-      component.componentDidUpdate(prevProps: prevComponentElement.props, prevState: prevState)
+      component.componentDidUpdate(prevComponentElement.props, prevState)
 
     } else {
       // Blow away and start over - it's similar to mounting.
@@ -174,8 +173,6 @@ class RecoilCompositeInstance: RecoilInstance {
     component?.componentWillUnmount()
     Reconciler.unmountComponent(instance: renderedComponent)
 
-    // clean up references for ARC
-    component?.instance = nil
     view = nil
   }
 }

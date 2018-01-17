@@ -60,6 +60,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		4CACF248200A0D480060AB1A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8497B9CC1FE0795A00D29705 /* App.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		8497B98A1FE0338900D29705 = {
 			isa = PBXGroup;
 			children = (
@@ -81,13 +89,13 @@
 		8497B9951FE0338900D29705 /* RecoilApp */ = {
 			isa = PBXGroup;
 			children = (
+				4CACF248200A0D480060AB1A /* Components */,
 				8497B9961FE0338900D29705 /* AppDelegate.swift */,
 				8497B9981FE0338900D29705 /* ViewController.swift */,
 				8497B99A1FE0338900D29705 /* Main.storyboard */,
 				8497B99D1FE0338900D29705 /* Assets.xcassets */,
 				8497B99F1FE0338900D29705 /* LaunchScreen.storyboard */,
 				8497B9A21FE0338900D29705 /* Info.plist */,
-				8497B9CC1FE0795A00D29705 /* App.swift */,
 				8432F5731FE4835100C67334 /* KeyExample.swift */,
 				8432F56F1FE47BC600C67334 /* FunctionalApp.swift */,
 				8432F57B1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift */,
