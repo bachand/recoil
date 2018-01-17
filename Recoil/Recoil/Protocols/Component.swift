@@ -12,13 +12,6 @@ public protocol Component {
 
   var props: Props { get }
   var state: State { get }
-  weak var instance: RecoilCompositeInstance? { get }
-
-  func setPropsInternal(props: Props)
-
-  func setStateInternal(state: State)
-
-  func getStateInternal() -> State
 
   func componentWillReceiveProps(_ nextProps: Props)
 

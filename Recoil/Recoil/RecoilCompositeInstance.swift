@@ -17,7 +17,7 @@ func getComponentElement(_ element: Element) -> ComponentElement {
   }
 }
 
-public class RecoilCompositeInstance: RecoilInstance {
+final class RecoilCompositeInstance: RecoilInstance {
   var currentElement: Element {
     didSet {
       componentElement = getComponentElement(currentElement)
@@ -106,8 +106,8 @@ public class RecoilCompositeInstance: RecoilInstance {
 
     currentElement = nextElement
 
-    component.setPropsInternal(componentElement.props)
-    component.setStateInternal(nextState)
+//    component.setPropsInternal(componentElement.props)
+//    component.setStateInternal(nextState)
     pendingState = nil
 
     // React has a wrapper instance, which complicates the logic. We'll do

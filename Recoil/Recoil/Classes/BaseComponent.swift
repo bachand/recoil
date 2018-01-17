@@ -31,6 +31,10 @@ public final class BaseComponent<P: Props, S: State> {
     return _state
   }
 
+  // MARK: Internal
+
+  weak var instance: RecoilCompositeInstance?
+
   // MARK: Private
 
   private var _props: P
