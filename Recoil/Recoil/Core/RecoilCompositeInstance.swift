@@ -8,19 +8,10 @@
 
 import Foundation
 
-func getComponentElement(_ element: Element) -> ComponentElement {
-  switch element {
-  case ElementEnum.component(let hostElement):
-    return hostElement
-  default:
-    fatalError()
-  }
-}
-
-final class RecoilCompositeInstance: RecoilInstance {
+final class RecoilCompositeInstance<Props: PropsProtocol, State: StateProtocol>: RecoilInstance {
   var currentElement: Element {
     didSet {
-      componentElement = getComponentElement(currentElement)
+      componentElement = currentElement.componentElement()
     }
   }
   var view: UIView?
@@ -28,12 +19,12 @@ final class RecoilCompositeInstance: RecoilInstance {
   var mountIndex: Int = -1
   var componentElement: ComponentElement
   var pendingState: State?
-  var component: Component?
+  var component: Component<Props, State>?
   var renderedComponent: RecoilInstance?
 
   init(element: Element, root: RecoilRoot?) {
     currentElement = element
-    componentElement = getComponentElement(element)
+    componentElement = element.componentElement()
     self.root = root
   }
 
@@ -174,5 +165,19 @@ final class RecoilCompositeInstance: RecoilInstance {
     Reconciler.unmountComponent(instance: renderedComponent)
 
     view = nil
+  }
+}
+
+// MARK: - Element
+
+private extension Element {
+  
+  func componentElement() -> ComponentElement {
+    switch self {
+    case Element.component(let hostElement):
+      return hostElement
+    default:
+      fatalError()
+    }
   }
 }

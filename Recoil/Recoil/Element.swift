@@ -20,9 +20,9 @@ extension Int: Key {
   public func recoilKeyValue() -> String { return "\(self)" }
 }
 
+// MARK: - Element
 
-
-public enum ElementEnum: Element {
+public enum Element {
   case host(HostElement)
   case component(ComponentElement)
   case function(FunctionalElement)
@@ -32,22 +32,28 @@ public enum ElementEnum: Element {
   case int(Int)
 }
 
+// MARK: - ComponentElement
+
 public struct ComponentElement {
-  let type: Component.Type
-  let props: Props
+  let type: ComponentProtocol.Type
+  let props: Any
   let key: Key?
 }
+
+// MARK: - Functional Element
 
 public struct FunctionalElement {
   let type: (Any) -> Element?
   let realType: Any
-  let props: Props
+  let props: Any
   let key: Key?
 }
 
+// MARK: - HostElement
+
 public struct HostElement {
   let type: HostComponentProtocol.Type
-  let props: Props
+  let props: Any
   internal let key: Key?
 }
 
